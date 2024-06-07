@@ -15,7 +15,7 @@ class BaseModel(models.Model):
 class PatientDetail(BaseModel):
     full_name = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(max_length=100, null=True, blank=True)
-    phone_number = models.CharField(max_length=100, null=True, blank=True)
+    phone_number = models.CharField(max_length=100, null=True, blank=True, unique=True)
     date_of_birth = models.DateField(null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
 
