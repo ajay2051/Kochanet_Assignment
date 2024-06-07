@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
-    'patient.apps.PatientConfig'
+    'patient.apps.PatientConfig',
+    'registered_users.apps.RegisteredUsersConfig'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'patient.AdminUser'
+AUTH_USER_MODEL = 'registered_users.RegisteredUser'
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
