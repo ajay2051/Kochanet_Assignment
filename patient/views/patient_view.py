@@ -3,6 +3,7 @@ import os
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -20,6 +21,7 @@ class PatientAPIView(APIView):
     queryset = PatientDetail.objects.all()
     serializer_class = PatientDetailSerializer
     pagination_class = CustomPagination
+    permission_classes = [IsAuthenticated]  # Used superuser credentials
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -88,7 +90,7 @@ class PatientAPIView(APIView):
                 raise ValidationError({'detail': 'Patient not found'})
             serializer = self.serializer_class(patient, data=request.data, partial=True)
             if serializer.is_valid():
-                self.perform_create(serializer)
+                self.perform_update(serializer)
                 self.logger.info('Patient Updated')
                 return Response({"data": serializer.data, "message": "Patient Updated Successfully"}, status=status.HTTP_200_OK)
             self.logger.error('Something Went Wrong While Updating Patient')

@@ -3,6 +3,7 @@ import os
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -20,6 +21,7 @@ class AssessmentAPIView(APIView):
     queryset = Assessment.objects.all()
     serializer_class = AssessmentSerializer
     pagination_class = CustomPagination
+    permission_classes = [IsAuthenticated]  # Used superuser credentials
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -77,7 +79,7 @@ class AssessmentAPIView(APIView):
                 raise ValidationError({'detail': 'Assessment not found'})
             serializer = self.serializer_class(assessment, data=request.data, partial=True)
             if serializer.is_valid():
-                self.perform_create(serializer)
+                self.perform_update(serializer)
                 self.logger.info('Assessment Updated')
                 return Response({"data": serializer.data, "message": "Assessment Updated Successfully"}, status=status.HTTP_200_OK)
             self.logger.error('Something Went Wrong While Updating Assessment')

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from patient.models import PatientDetail, Assessment
+from patient.models import Assessment, PatientDetail
 
 
 class PatientDetailSerializer(serializers.ModelSerializer):
