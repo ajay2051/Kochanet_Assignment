@@ -1,7 +1,6 @@
 import os
 
 from django.db.models import Q
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -60,8 +59,8 @@ class PatientAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            full_name = self.request.query_params.get('full_name', "")
-            phone_number = self.request.query_params.get('phone_number', "")
+            full_name = self.request.query_params.get('full_name', None)
+            phone_number = self.request.query_params.get('phone_number', None)
             paginator = self.pagination_class()
             # Filter data by query params
             q = Q()

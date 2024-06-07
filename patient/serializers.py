@@ -20,6 +20,11 @@ class PatientDetailSerializer(serializers.ModelSerializer):
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
+    patient_id = serializers.PrimaryKeyRelatedField(
+        queryset=PatientDetail.objects.all(),
+        source='patient'  # patient is model field name
+    )
+
     class Meta:
         model = Assessment
         fields = [
@@ -33,4 +38,3 @@ class AssessmentSerializer(serializers.ModelSerializer):
             "created_date",
             "updated_date",
         ]
-
