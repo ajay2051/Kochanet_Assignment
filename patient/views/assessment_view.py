@@ -102,4 +102,3 @@ class AssessmentAPIView(APIView):
         except Exception as e:
             self.logger.error(f"Exception {e} While Deleting Assessment")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-

@@ -47,7 +47,7 @@ class Logger:
             self.__date_format = self.__config.get("date_format", self.__default_log_date_format)
 
     def get_logger(self, is_multiprocess=False, folder_name=None):
-        current_date = datetime.now().strftime("%Y-%m-%d")
+        # current_date = datetime.now().strftime("%Y-%m-%d")
         now = datetime.now()
         month_name = now.strftime("%B")
         log_path = os.path.join(self.__home_path, "logs", str(now.year), month_name, str(now.day))
