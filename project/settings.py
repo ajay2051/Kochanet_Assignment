@@ -76,6 +76,8 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'patient.AdminUser'
+
 WSGI_APPLICATION = 'project.wsgi.application'
 
 # Database

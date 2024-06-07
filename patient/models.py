@@ -1,6 +1,11 @@
 from datetime import date
 
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from patient.managers import CustomUserManager
 
 
 class BaseModel(models.Model):
@@ -10,6 +15,52 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class AdminUser(AbstractUser, BaseModel):
+    """
+    Custom User Model with email as login field
+    """
+
+    username = models.CharField(_("username"), max_length=255, null=True, blank=True)
+    email = models.EmailField(_("email"), unique=True)
+    password = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
+    phone_number = models.CharField(
+        validators=[
+            RegexValidator(
+                regex=r"^(?:\+977)?9[87]\d{8}$", message=(_("Invalid Number"))
+            )
+        ],
+        max_length=15,
+        null=True,
+        blank=True,
+        unique=True,
+    )
+    date_joined = models.DateTimeField(auto_now_add=True)
+    branch = models.CharField(max_length=255, null=True, blank=True)
+    last_login = models.DateTimeField(auto_now_add=True)
+    is_admin = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        db_table = "auth_user"
+
+    objects = CustomUserManager()
+
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = "%s %s" % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def __str__(self):
+        return self.email
 
 
 class PatientDetail(BaseModel):
